@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Insightalysis AI",
+  "version": "1.0.0",
+  "description": "Learn better with data & research analysis - CSV, PDF, and ML predictions",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Insightalysis AI"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "host_permissions": [
+    "http://127.0.0.1:5000/*"
+  ]
+}

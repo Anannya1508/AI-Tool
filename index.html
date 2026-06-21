@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insightalysis AI</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <svg viewBox="0 0 64 64" width="80" height="80">
+                    <defs>
+                        <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#818cf8"/>
+                            <stop offset="50%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#06b6d4"/>
+                        </linearGradient>
+                        <filter id="splashGlow">
+                            <feGaussianBlur stdDeviation="2" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#splashGrad)" opacity="0.1"/>
+                    <rect x="6" y="6" width="52" height="52" rx="14" fill="none" stroke="url(#splashGrad)" stroke-width="1.5" opacity="0.3"/>
+                    <text x="32" y="42" text-anchor="middle" font-family="Inter, sans-serif" font-size="32" font-weight="800" fill="url(#splashGrad)" filter="url(#splashGlow)">I</text>
+                </svg>
+                <div class="splash-logo-glow"></div>
+            </div>
+            <div class="splash-text">
+                <span class="splash-name">Insightalysis</span>
+                <span class="splash-badge">AI</span>
+            </div>
+            <div class="splash-loader">
+                <div class="splash-loader-bar"></div>
+            </div>
+            <p class="splash-tagline">AI-Powered Research Analysis</p>
+        </div>
+    </div>
+
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon-wrap">
+                        <svg class="logo-icon" viewBox="0 0 36 36" width="36" height="36">
+                            <defs>
+                                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#818cf8"/>
+                                    <stop offset="50%" stop-color="#6366f1"/>
+                                    <stop offset="100%" stop-color="#06b6d4"/>
+                                </linearGradient>
+                                <filter id="logoGlow">
+                                    <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                                    <feMerge>
+                                        <feMergeNode in="blur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <rect x="2" y="2" width="32" height="32" rx="9" fill="url(#logoGrad)" opacity="0.12"/>
+                            <rect x="3" y="3" width="30" height="30" rx="8" fill="none" stroke="url(#logoGrad)" stroke-width="1" opacity="0.3"/>
+                            <text x="18" y="24" text-anchor="middle" font-family="Inter, sans-serif" font-size="19" font-weight="800" fill="url(#logoGrad)" filter="url(#logoGlow)">I</text>
+                        </svg>
+                        <div class="logo-icon-glow"></div>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">Insightalysis</span>
+                        <span class="logo-badge">AI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Upload Section -->
+                <div class="sidebar-section">
+                    <div class="section-label">Files</div>
+                    <div class="upload-area" id="uploadArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+                            <path d="M20 16.7c1.2-1 2-2.4 2-4.2 0-3.3-2.7-6-6-6h-1c-2.8 0-5.1-1.8-6-4.2-.3-.7-1.2-1.1-2-.8C5.8 6.1 4 8.3 4 11c0 2.2 1.2 4.1 3 5.2"/>
+                            <path d="M12 16l4-4m-4 4l-4-4"/>
+                        </svg>
+                        <p class="upload-text">Drop files here</p>
+                        <p class="upload-hint">CSV, PDF</p>
+                        <input type="file" id="fileInput" multiple accept=".csv,.pdf" hidden>
+                        <button class="btn-browse" onclick="document.getElementById('fileInput').click()">Browse</button>
+                    </div>
+                    <div id="fileList" class="file-list"></div>
+                </div>
+
+                <!-- Model Upload -->
+                <div class="sidebar-section">
+                    <div class="section-label">ML Model</div>
+                    <div class="upload-area upload-area-sm" id="modelUploadArea">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+                            <rect x="4" y="18" width="16" height="4" rx="2"/>
+                        </svg>
+                        <p class="upload-text-sm">Drop .pkl model</p>
+                        <input type="file" id="modelInput" accept=".pkl" hidden>
+                        <button class="btn-browse-sm" onclick="document.getElementById('modelInput').click()">Choose</button>
+                    </div>
+                    <div id="modelList" class="file-list"></div>
+                    <div class="input-field">
+                        <label>Target column <span class="optional">(optional)</span></label>
+                        <input type="text" id="targetColumnInput" placeholder="e.g. Marks">
+                    </div>
+                    <div id="modelStatus" class="model-status" hidden></div>
+                </div>
+
+                <!-- Analysis Type -->
+                <div class="sidebar-section" id="analysisSection">
+                    <div class="section-label">Analysis Mode</div>
+                    <div class="mode-grid">
+                        <button class="mode-btn active" data-type="auto">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a4 4 0 014 4c0 1.95-1.4 3.58-3.25 3.93a1 1 0 00-.75.97V13"/><circle cx="12" cy="17" r="1"/></svg>
+                            Auto
+                        </button>
+                        <button class="mode-btn" data-type="csv">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                            CSV
+                        </button>
+                        <button class="mode-btn" data-type="pdf">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+                            PDF
+                        </button>
+                        <button class="mode-btn" data-type="combined">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                            Combined
+                        </button>
+                    </div>
+                    <button class="btn-analyze" id="analyzeBtn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Run Analysis
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn-theme" id="themeToggle">
+                    <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <header class="topbar">
+                <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
+                <button class="sidebar-toggle-topbar" id="sidebarToggleTopbar" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <div class="topbar-title">
+                    <span id="topbarMode">Ready to analyze</span>
+                </div>
+                <div class="topbar-actions" id="topbarActions" hidden>
+                    <div class="export-dropdown">
+                        <button class="btn-export" id="exportBtn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export
+                        </button>
+                        <div class="export-menu" id="exportMenu">
+                            <button onclick="exportPDF()">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+                                Download PDF Report
+                            </button>
+                            <button onclick="exportCSV()">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                                Download CSV Data
+                            </button>
+                            <button onclick="exportJSON()">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+                                Download JSON
+                            </button>
+                            <button onclick="exportChartPNG()">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                Save Chart as PNG
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn-share" id="shareBtn" onclick="shareResults()">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        Share
+                    </button>
+                    <button class="btn-refresh" id="refreshBtn" onclick="resetTool()" title="Start new analysis">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                        New
+                    </button>
+                </div>
+            </header>
+
+            <div class="content" id="content">
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 64 64" width="80" height="80">
+                            <defs>
+                                <linearGradient id="emptyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#818cf8" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.3"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="32" cy="32" r="30" fill="url(#emptyGrad)" stroke="#818cf8" stroke-width="1" stroke-opacity="0.3"/>
+                            <path d="M22 28l6 6 14-14" stroke="#818cf8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h2>Upload files to begin</h2>
+                    <p>AI-powered analysis for research papers and datasets</p>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState" hidden>
+                    <div class="ai-typing">
+                        <div class="ai-avatar">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2m-4-6h2m8 0h2"/></svg>
+                        </div>
+                        <div class="typing-content">
+                            <div class="typing-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <p id="loadingStep">Analyzing your files...</p>
+                        </div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps" id="progressSteps">
+                        <div class="step active" data-step="upload">Uploading</div>
+                        <div class="step" data-step="extract">Extracting</div>
+                        <div class="step" data-step="analyze">Analyzing</div>
+                        <div class="step" data-step="render">Rendering</div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results" id="results" hidden>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
