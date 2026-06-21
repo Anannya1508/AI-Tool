@@ -1,94 +1,108 @@
 ﻿# Insightalysis AI
 
-Insightalysis AI is a lightweight research and dataset analysis tool that combines CSV analytics, PDF research summarization, and machine learning model evaluation. It is built to help students, researchers, and analysts gain faster insights from academic papers and structured data.
+Insightalysis AI is a modern research and dataset analytics platform built to accelerate insights from academic papers, structured datasets, and machine learning models. The project unifies CSV profiling, PDF content analysis, and model evaluation into a single local workflow.
 
-## Key Features
+## Overview
 
-- Analyze CSV datasets with summary statistics, missing value detection, and data profiling
-- Process PDF research papers for text extraction and insight generation
-- Run combined analysis across CSV, PDF, and optional ML model files
-- Upload `.pkl` machine learning models for prediction and dataset evaluation
-- Browser popup interface with local Flask backend integration
-- Built-in backend health checks and file validation
+Insightalysis AI enables users to:
 
-## Repository Structure
+- Perform advanced dataset analysis on CSV files
+- Extract and summarize research content from PDF papers
+- Combine data and document analysis for richer insight
+- Apply serialized machine learning models to datasets
+- Operate through a lightweight browser popup interface backed by a local Flask service
+
+## Core Capabilities
+
+- CSV analytics with automated summary statistics, missing value detection, and structural profiling
+- PDF processing for text extraction, research summarization, and document insight generation
+- Combined analysis that supports multi-source workflows (CSV + PDF + model)
+- `.pkl` model upload support for dataset evaluation and prediction
+- Local API health checks and secure file validation
+
+## Repository Layout
 
 - `backend/`
-  - `app.py` — Flask backend service and REST API endpoints
-  - `requirements.txt` — Python dependencies
-  - `modules/` — analysis modules supporting CSV, PDF, and ML workflows
-  - `uploads/` — upload storage and sample data
-  - `models/` — saved prediction model files
-  - `run_pdf_test.py` — helper script for PDF generation and backend validation
-- `css/` — stylesheet for the popup UI
-- `js/` — frontend JavaScript logic for popup interactions
-- `popup.html` — browser popup interface
-- `manifest.json` — extension manifest for local UI hosting
-- `setup.bat`, `setup.sh`, `run_backend.bat` — environment setup and launch helpers
-- `README.md` — project overview and setup instructions
+  - `app.py` — Flask backend application with REST endpoints
+  - `requirements.txt` — Python dependency manifest
+  - `modules/` — implementation modules for CSV, PDF, and ML analysis
+  - `uploads/` — runtime upload storage and sample files
+  - `models/` — persisted model artifacts
+  - `run_pdf_test.py` — PDF generation and analysis validation script
+- `css/` — popup UI styling
+- `js/` — frontend application logic
+- `popup.html` — browser popup interface entry point
+- `manifest.json` — local extension manifest
+- `setup.bat`, `setup.sh`, `run_backend.bat` — execution helpers
+- `README.md` — project documentation
 
-## Getting Started
+## Installation
 
-### 1. Install Dependencies
+1. Install Python dependencies:
 
-Open a terminal in `backend/` and install the Python packages:
+   ```bash
+   cd backend
+   python -m pip install -r requirements.txt
+   ```
 
-```bash
-cd backend
-python -m pip install -r requirements.txt
-```
+2. Start the backend service:
 
-### 2. Start the Backend
+   ```bash
+   python app.py
+   ```
 
-Run the Flask backend from the `backend` folder:
+3. Confirm the backend is running at `http://127.0.0.1:5000`.
 
-```bash
-python app.py
-```
+## Usage Guide
 
-The service is expected to run on `http://127.0.0.1:5000`.
+### Popup Interface
 
-### 3. Use the Popup Interface
+- Open `popup.html` in a compatible browser or load it as a local extension UI
+- Upload one or more supported files: `.csv`, `.pdf`, `.pkl`
+- Optionally specify a target column for model evaluation
+- Choose an analysis mode and click **Start Analysis**
 
-- Open `popup.html` from the repository in a browser or load it as a local extension UI
-- Upload supported files: CSV, PDF, or PKL
-- Optionally set a target column for model-driven evaluation
-- Select an analysis mode and click `Start Analysis`
+### Supported Modes
 
-## Usage
+- **Auto** — dynamically select the best analysis flow based on uploaded files
+- **CSV** — dataset analytics for CSV input
+- **PDF** — research paper processing and summarization
+- **Combined** — integrated analysis of CSV, PDF, and optional model content
 
-The popup UI supports multiple workflows:
+## Backend API Reference
 
-- `Auto` — automatically selects the best analysis path based on uploaded files
-- `CSV` — performs dataset analysis on a CSV file
-- `PDF` — processes a PDF document for research insights
-- `Combined` — evaluates CSV, PDF, and optional model data together
+- `GET /` — service metadata and available endpoints
+- `POST /analyze-csv` — process CSV uploads
+- `POST /analyze-pdf` — process PDF uploads
+- `POST /analyze-combined` — combine CSV, PDF, and optional model analysis
+- `POST /analyze-with-model` — analyze a CSV dataset with an uploaded `.pkl` model
+- `GET /health` — backend health verification endpoint
 
-## Backend API
+## Technical Notes
 
-The backend exposes several endpoints:
-
-- `GET /` — service information and available endpoints
-- `POST /analyze-csv` — analyze an uploaded CSV file
-- `POST /analyze-pdf` — analyze an uploaded PDF file
-- `POST /analyze-combined` — combined CSV + optional PDF + optional model analysis
-- `POST /analyze-with-model` — evaluate a CSV dataset with an uploaded `.pkl` model
-- `GET /health` — backend health check for the UI
-
-## Notes
-
-- The backend allows uploads up to `64 MB`
-- Supported extensions: `.csv`, `.pdf`, `.pkl`
-- The frontend currently targets `http://127.0.0.1:5000`
-- `Flask-CORS` is configured to enable browser communication from the popup UI
+- Maximum upload size is `64 MB`
+- Supported upload formats: `.csv`, `.pdf`, `.pkl`
+- The frontend is configured to communicate with the backend at `http://127.0.0.1:5000`
+- `Flask-CORS` is enabled to support browser-based requests
 
 ## Development
 
-- Improve dataset analysis inside `backend/modules/csv_analyzer.py`
-- Enhance PDF extraction and summarization in `backend/modules/pdf_processor.py`
-- Expand prediction support in `backend/modules/ml_predictor.py`
-- Refine UI behavior in `js/popup.js`
+This repository is structured to support iterative enhancements across the following components:
+
+- `backend/modules/csv_analyzer.py` — dataset profiling and analytics logic
+- `backend/modules/pdf_processor.py` — PDF text extraction and summarization logic
+- `backend/modules/ml_predictor.py` — model loading, prediction, and evaluation logic
+- `js/popup.js` — frontend interaction, file handling, and API orchestration
+
+## Contribution
+
+Contributions are welcome. Suggested improvements include:
+
+- Enhancing dataset profiling and statistical reports
+- Improving PDF extraction accuracy and insight generation
+- Extending model support and prediction diagnostics
+- Refining the popup user experience and error handling
 
 ## License
 
-Add your preferred license here.
+Specify the project license here.
